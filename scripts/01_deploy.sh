@@ -21,7 +21,7 @@ gcloud config set project "${PROJECT_ID}" >/dev/null
 gcloud auth list
 
 # Plan/apply the whole environment
-cd "${ROOT_DIR}/infra/live/staging/asia-south1"
+cd "${ROOT_DIR}/infra/live/staging"
 terragrunt run-all init
 terragrunt run-all plan
 
