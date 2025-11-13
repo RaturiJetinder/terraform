@@ -17,10 +17,6 @@ if ! gsutil ls -p "${PROJECT_ID}" "gs://${STATE_BUCKET}" >/dev/null 2>&1; then
   gsutil mb -p "${PROJECT_ID}" -c "${STATE_BUCKET_STORAGE_CLASS}" -l "${STATE_BUCKET_LOCATION}" "gs://${STATE_BUCKET}"
   # Uniform bucket-level access, no public access
   gsutil uniformbucketlevelaccess set on "gs://${STATE_BUCKET}"
-  gsutil iam ch \
-    "projectEditor:${PROJECT_ID}:objectViewer" \
-    "projectViewer:${PROJECT_ID}:objectViewer" \
-    >/dev/null 2>&1 || true  # harmless if not resolvable
 else
   echo "State bucket already exists: gs://${STATE_BUCKET}"
 fi
