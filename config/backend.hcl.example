@@ -1,0 +1,7 @@
+locals {
+  project_id        = "my-gcp-project"
+  default_region    = "us-central1"
+  state_bucket      = "my-tf-state-bucket"
+  state_prefix      = "terraform/state"
+  impersonate_sa    = null
+}

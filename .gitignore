@@ -1,0 +1,8 @@
+.terraform/
+.terragrunt-cache/
+*.tfstate*
+*.lock.hcl
+config/backend.hcl
+terraform.tfvars
+*.log
+.DS_Store
