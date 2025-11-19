@@ -46,6 +46,24 @@ resource automatically adheres to the standard. See the README for usage example
 * **Identity & secrets**: IAM bindings use the `livgolf-iam-*` naming. Encrypt data with CMEK via Cloud KMS key rings (`kms`) and
   track secrets in Secret Manager entries (`secret`) that map one-to-one with consuming workloads.
 
+## Org-wide VPC & IP strategy (staging focus)
+
+The Google Cloud organisation owns the `10.64.0.0/10` RFC1918 block which is carved into sixteen `/14` project allocations to
+support up to 16 projects. P1 (staging) maps to `10.64.0.0/14` and follows the compact per-region template below (first region:
+`us-central1`).
+
+| Resource | CIDR | Notes |
+| --- | --- | --- |
+| Workload subnet | `10.64.0.0/23` | Dual-stack subnet for GCE/Dataflow; IPv6 auto-assigned. |
+| GKE Pods secondary | `10.66.0.0/21` | 2,048 pod IPs; add another /21 later if needed. |
+| GKE Services secondary | `10.66.8.0/25` | 128 ClusterIPs; stamp more /25s as clusters grow. |
+| Serverless VPC connector subnet | `10.70.0.0/27` | Shared by Cloud Run/Functions connectors; create extra /27s for isolation. |
+| PSA range | `10.71.0.0/17` | Project-wide for Cloud SQL, Memorystore, etc.; allocate another range when exhausted. |
+
+Apigee peering reserves `/22` + `/28` ranges beginning at `10.70.128.0/22`, though those resources are not yet automated. The
+Terragrunt staging stack consumes the above ranges so subsequent modules (GKE, Cloud SQL, Cloud Run) can reference them without
+guessing CIDRs.
+
 ## Parallelisation, orchestration, and batch windows
 
 * **Data pipelines**: Dataflow (`df`) templates and Dataproc (`dataproc`) clusters should set worker counts explicitly and rely on
