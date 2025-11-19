@@ -1,0 +1,7 @@
+resource_name,component_type,purpose,instance_number,environment,description,current_state,owner,configuration_notes
+livgolf-gcs-tfstate-01-dev,gcs,tfstate,01,dev,Remote Terraform state bucket for dev environment,planned,platform,Versioning enabled; retention 365d; uniform access
+livgolf-gcs-tfstate-01-prod,gcs,tfstate,01,prod,Remote Terraform state bucket for prod environment,planned,platform,Requires CMEK before go-live; apply from envs/prod stack
+livgolf-vpc-shared-01-prod,vpc,shared,01,prod,Primary production VPC hosting middleware tier,in-design,network,Three subnets (/24) per AZ; Cloud NAT shared
+livgolf-pubsub-events-01-prod,pubsub,events,01,prod,Event ingestion topic for scoring updates,in-design,data,7-day retention; push subscription to Cloud Run middleware
+livgolf-sql-appdb-01-prod,sql,appdb,01,prod,Cloud SQL HA instance for transactional back office app,planned,app-team,Postgres 14; private service connect; point-in-time recovery enabled
+livgolf-run-back-office-01-prod,run,back-office,01,prod,Cloud Run service hosting the back-office API,placeholder,app-team,Max 200 instances; Cloud Armor policy `standard-gke`
