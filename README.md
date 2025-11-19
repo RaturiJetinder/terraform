@@ -42,7 +42,7 @@ Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of the
      --project-id=my-gcp-project \
      --bucket-name=my-tf-state-bucket \
      --bucket-location=us \
-     --default-region=us-central1
+    --default-region=europe-west2
    ```
 
 3. Once the bootstrap step has completed, you can run Terragrunt from an environment directory. For example, to target `envs/prod`:

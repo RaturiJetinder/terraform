@@ -17,7 +17,7 @@ variable "bucket_location" {
 variable "default_region" {
   description = "Default region for the Google provider"
   type        = string
-  default     = "us-central1"
+  default     = "europe-west2"
 }
 
 variable "force_destroy" {

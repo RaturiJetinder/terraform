@@ -5,8 +5,8 @@ livgolf-vpc-shared-01-prod,vpc,shared,01,prod,Primary production VPC hosting mid
 livgolf-pubsub-events-01-prod,pubsub,events,01,prod,Event ingestion topic for scoring updates,in-design,data,7-day retention; push subscription to Cloud Run middleware
 livgolf-sql-appdb-01-prod,sql,appdb,01,prod,Cloud SQL HA instance for transactional back office app,planned,app-team,Postgres 14; private service connect; point-in-time recovery enabled
 livgolf-run-back-office-01-prod,run,back-office,01,prod,Cloud Run service hosting the back-office API,placeholder,app-team,Max 200 instances; Cloud Armor policy `standard-gke`
-livgolf-vpc-shared-01-stg,vpc,shared,01,stg,Primary staging VPC carrying us-central1 workloads,planned,network,Uses org-allotted 10.64.0.0/23 + dual-stack IPv6
-livgolf-snet-workloads-01-stg,snet,workloads,01,stg,us-central1 workload subnet tied to staging VPC,planned,network,CIDR 10.64.0.0/23 with IPv6 + Private Google Access
+livgolf-vpc-shared-01-stg,vpc,shared,01,stg,Primary staging VPC carrying europe-west2 workloads,planned,network,Uses org-allotted 10.64.0.0/23 + dual-stack IPv6
+livgolf-snet-workloads-01-stg,snet,workloads,01,stg,europe-west2 workload subnet tied to staging VPC,planned,network,CIDR 10.64.0.0/23 with IPv6 + Private Google Access
 livgolf-snet-gke-pods-01-stg,snet,gke-pods,01,stg,GKE pods secondary range for staging cluster,planned,network,CIDR 10.66.0.0/21; attach to future GKE module
 livgolf-snet-gke-svcs-01-stg,snet,gke-svcs,01,stg,GKE services secondary range for staging cluster,planned,network,CIDR 10.66.8.0/25 for ClusterIPs
 livgolf-snet-svpc-01-stg,snet,svpc,01,stg,Dedicated subnet for Serverless VPC Access connector,planned,network,CIDR 10.70.0.0/27 sized per concurrency plan
