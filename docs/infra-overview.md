@@ -50,7 +50,7 @@ resource automatically adheres to the standard. See the README for usage example
 
 The Google Cloud organisation owns the `10.64.0.0/10` RFC1918 block which is carved into sixteen `/14` project allocations to
 support up to 16 projects. P1 (staging) maps to `10.64.0.0/14` and follows the compact per-region template below (first region:
-`us-central1`).
+`europe-west2`).
 
 | Resource | CIDR | Notes |
 | --- | --- | --- |

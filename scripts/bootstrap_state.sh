@@ -10,7 +10,7 @@ CONFIG_SAMPLE="${ROOT_DIR}/config/backend.hcl.example"
 PROJECT_ID=""
 BUCKET_NAME=""
 BUCKET_LOCATION="us"
-DEFAULT_REGION="us-central1"
+DEFAULT_REGION="europe-west2"
 STATE_PREFIX="terraform/state"
 FORCE_DESTROY="false"
 IMPERSONATE_SA=""
@@ -43,7 +43,7 @@ Options:
   --instance-number    Numeric instance identifier (default: 1)
   --environment        Environment tag such as dev, test, prod (required if --bucket-name not supplied)
   --bucket-location    Multi-region or region for the bucket (default: us)
-  --default-region     Default Google Cloud region for providers (default: us-central1)
+  --default-region     Default Google Cloud region for providers (default: europe-west2)
   --state-prefix       Prefix inside the bucket for Terraform state (default: terraform/state)
   --force-destroy      Set to true to allow bucket deletion even if it contains objects (default: false)
   --impersonate-sa     Optional service account email for provider impersonation

@@ -40,7 +40,7 @@ variable "bucket_location" {
 variable "default_region" {
   description = "Default region for provider configuration"
   type        = string
-  default     = "us-central1"
+  default     = "europe-west2"
 }
 
 variable "state_prefix" {

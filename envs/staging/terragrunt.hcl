@@ -13,7 +13,7 @@ terraform {
 inputs = {
   environment                   = local.environment
   network_name                  = "livgolf-vpc-shared-01-${local.environment}"
-  network_description           = "Primary staging VPC for us-central1 workloads"
+  network_description           = "Primary staging VPC for europe-west2 workloads"
   workload_subnet_name          = "livgolf-snet-workloads-01-${local.environment}"
   workload_subnet_cidr          = "10.64.0.0/23"
   pods_secondary_range_name     = "livgolf-snet-gke-pods-01-${local.environment}"
