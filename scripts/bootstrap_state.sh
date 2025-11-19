@@ -18,6 +18,8 @@ COMPONENT_TYPE="gcs"
 PURPOSE=""
 INSTANCE_NUMBER="1"
 ENVIRONMENT=""
+SA_KEY_FILE=""
+SERVICE_ACCOUNT_EMAIL=""
 
 ALLOWED_COMPONENT_TYPES=(
   vm cont k8s sl dataproc run df
@@ -45,11 +47,13 @@ Options:
   --state-prefix       Prefix inside the bucket for Terraform state (default: terraform/state)
   --force-destroy      Set to true to allow bucket deletion even if it contains objects (default: false)
   --impersonate-sa     Optional service account email for provider impersonation
+  --service-account-key-file
+                       Path to the service account key JSON. All commands will run as this account
   -h, --help           Show this help message
 
 Environment:
-  GOOGLE_APPLICATION_CREDENTIALS must point to a service account key JSON file, or you
-  need to be authenticated with gcloud and have application default credentials available.
+  The script requires explicit service account credentials. Application default
+  credentials or gcloud user logins are not used.
 USAGE
 }
 
@@ -96,6 +100,8 @@ parse_args() {
       --force-destroy) FORCE_DESTROY="$2" ; shift 2 ;;
       --impersonate-sa=*) IMPERSONATE_SA="${1#*=}" ; shift ;;
       --impersonate-sa) IMPERSONATE_SA="$2" ; shift 2 ;;
+      --service-account-key-file=*) SA_KEY_FILE="${1#*=}" ; shift ;;
+      --service-account-key-file) SA_KEY_FILE="$2" ; shift 2 ;;
       -h|--help) usage ; exit 0 ;;
       *) echo "Unknown option: $1" >&2 ; usage >&2 ; exit 1 ;;
     esac
@@ -113,6 +119,12 @@ parse_args() {
       usage >&2
       exit 1
     fi
+  fi
+
+  if [[ -z "$SA_KEY_FILE" ]]; then
+    echo "[ERROR] --service-account-key-file is required to ensure the script uses the provided service account." >&2
+    usage >&2
+    exit 1
   fi
 }
 
@@ -171,6 +183,42 @@ generate_bucket_name() {
   BUCKET_NAME="livgolf-${COMPONENT_TYPE}-${PURPOSE}-${INSTANCE_NUMBER}-${ENVIRONMENT}"
 }
 
+load_service_account_email() {
+  if [[ -z "$SERVICE_ACCOUNT_EMAIL" ]]; then
+    if ! SERVICE_ACCOUNT_EMAIL=$(python3 - "$SA_KEY_FILE" <<'PY' 2>/dev/null); then
+import json
+import sys
+
+with open(sys.argv[1], 'r', encoding='utf-8') as fp:
+    data = json.load(fp)
+print(data.get('client_email', ''))
+PY
+      echo "[ERROR] Unable to parse service account email from key file." >&2
+      exit 1
+    fi
+    if [[ -z "$SERVICE_ACCOUNT_EMAIL" ]]; then
+      echo "[ERROR] Service account key file does not contain a client_email field." >&2
+      exit 1
+    fi
+  fi
+}
+
+authenticate_service_account() {
+  if [[ ! -f "$SA_KEY_FILE" ]]; then
+    echo "[ERROR] Service account key file '$SA_KEY_FILE' not found." >&2
+    exit 1
+  fi
+
+  load_service_account_email
+
+  export GOOGLE_APPLICATION_CREDENTIALS="$SA_KEY_FILE"
+  export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$SA_KEY_FILE"
+  export CLOUDSDK_CORE_ACCOUNT="$SERVICE_ACCOUNT_EMAIL"
+  export CLOUDSDK_CORE_PROJECT="$PROJECT_ID"
+
+  echo "[INFO] Using service account ${SERVICE_ACCOUNT_EMAIL} for Terraform and gcloud commands."
+}
+
 write_backend_config() {
   cat <<EOF_CONF > "$CONFIG_FILE"
 locals {
@@ -203,6 +251,9 @@ run_bootstrap() {
 main() {
   parse_args "$@"
   require_cmd terraform
+  require_cmd python3
+
+  authenticate_service_account
 
   if [[ -z "$BUCKET_NAME" ]]; then
     generate_bucket_name
