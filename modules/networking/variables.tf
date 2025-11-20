@@ -90,3 +90,25 @@ variable "psa_range_cidr" {
   description = "CIDR for the Private Service Access range."
   type        = string
 }
+
+variable "internal_ipv4_ranges" {
+  description = "List of IPv4 CIDR ranges that represent internal network space allowed for bidirectional traffic."
+  type        = list(string)
+}
+
+variable "app_service_account_email" {
+  description = "Service account email used by application workloads that need egress to Google APIs via the restricted VIP."
+  type        = string
+}
+
+variable "health_check_target_tags" {
+  description = "Network tags applied to instances that must be reachable by Google health checks (IPv4)."
+  type        = list(string)
+  default     = ["allow-health-checks"]
+}
+
+variable "health_check_ipv6_target_tags" {
+  description = "Network tags applied to instances that must be reachable by Google health checks (IPv6)."
+  type        = list(string)
+  default     = ["allow-health-checks-ipv6"]
+}
