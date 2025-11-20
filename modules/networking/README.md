@@ -29,6 +29,10 @@ This module provisions the shared Google Cloud networking stack used by each env
 | `svpc_connector_max_throughput` | number | Maximum throughput for the connector (default `300`). |
 | `psa_range_name` | string | Name of the PSA address range. |
 | `psa_range_cidr` | string | CIDR for the PSA range. |
+| `internal_ipv4_ranges` | list(string) | IPv4 CIDRs considered internal to the VPC for allow/deny firewall rules. |
+| `app_service_account_email` | string | Service account email allowed to egress to Google APIs over the restricted VIP. |
+| `health_check_target_tags` | list(string) | Network tags that should accept IPv4 Google health checks on ports 80/443/4221. |
+| `health_check_ipv6_target_tags` | list(string) | Network tags that should accept IPv6 Google health checks on ports 80/443/4221. |
 
 ## Outputs
 

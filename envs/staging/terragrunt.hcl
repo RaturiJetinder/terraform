@@ -4,6 +4,7 @@ include "root" {
 
 locals {
   environment = "stg"
+  project_id  = include.root.locals.project_id
 }
 
 terraform {
@@ -27,4 +28,22 @@ inputs = {
   svpc_connector_max_throughput = 300
   psa_range_name                = "livgolf-snet-psa-01-${local.environment}"
   psa_range_cidr                = "10.71.0.0/17"
+  internal_ipv4_ranges          = [
+    "10.64.0.0/14",
+    "10.70.0.0/27",
+    "10.71.0.0/17",
+    "10.70.128.0/22",
+    "10.70.132.0/22",
+    "10.70.136.0/22",
+    "10.70.140.0/22",
+    "10.70.144.0/22",
+    "10.70.192.0/28",
+    "10.70.192.16/28",
+    "10.70.192.32/28",
+    "10.70.192.48/28",
+    "10.70.192.64/28",
+  ]
+  app_service_account_email     = "livgolf-iam-app-01-${local.environment}@${local.project_id}.iam.gserviceaccount.com"
+  health_check_target_tags      = ["allow-health-checks"]
+  health_check_ipv6_target_tags = ["allow-health-checks-ipv6"]
 }
