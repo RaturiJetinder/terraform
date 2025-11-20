@@ -17,6 +17,13 @@ remote_state {
   }
 }
 
+terraform {
+  before_hook "require_service_account_key" {
+    commands = ["init", "plan", "apply", "destroy"]
+    execute  = ["bash", "-c", "if [[ -z \"$GOOGLE_APPLICATION_CREDENTIALS\" ]] || [[ ! -f \"$GOOGLE_APPLICATION_CREDENTIALS\" ]]; then echo 'GOOGLE_APPLICATION_CREDENTIALS must point to a service account key file. ADC is not allowed.' >&2; exit 1; fi"]
+  }
+}
+
 generate "provider" {
   path      = "provider.auto.tf"
   if_exists = "overwrite_terragrunt"
