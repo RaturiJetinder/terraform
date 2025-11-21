@@ -14,6 +14,8 @@ This repository provides a starting point for provisioning infrastructure on Goo
 └── terragrunt.hcl            # Root Terragrunt configuration shared by all environments
 ```
 
+Environment stacks are kept uniform by nesting each component under its environment directory (for example, `envs/staging/networking` and `envs/staging/gke`), so Terragrunt dependencies stay explicit and easy to traverse.
+
 ## Prerequisites
 
 * Terraform >= 1.5

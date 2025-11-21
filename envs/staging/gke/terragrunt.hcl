@@ -10,7 +10,7 @@ locals {
 }
 
 dependency "networking" {
-  config_path = ".."
+  config_path = "../networking"
 
   mock_outputs = {
     network_id                   = "mock-network"
